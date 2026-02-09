@@ -1,6 +1,9 @@
+package entity;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Student {
+public class Student implements Serializable {
     private final String name;
     private final int uid;
 
@@ -15,7 +18,7 @@ public class Student {
         return Objects.hashCode(uid);
     }
 
-    Student(String name, int uid) {
+    public Student(String name, int uid) {
         this.name = name;
         this.uid = uid;
     }

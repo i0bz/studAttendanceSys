@@ -1,3 +1,6 @@
+import services.StudentAttendanceService;
+import services.StudentManagementService;
+import utility.ParseUtility;
 
 public class AttendanceSystemController {
     private final StudentManagementService studentManagement;
@@ -9,7 +12,7 @@ public class AttendanceSystemController {
      * @param managementService the student management service
      * @param attendanceService the attendance service
      */
-    AttendanceSystemController(StudentManagementService managementService, StudentAttendanceService attendanceService) {
+    public AttendanceSystemController(StudentManagementService managementService, StudentAttendanceService attendanceService) {
         this.studentManagement = managementService;
         this.AttendanceService = attendanceService;
     }
@@ -27,7 +30,7 @@ public class AttendanceSystemController {
     /**
      * Enroll student.
      *
-     * @param name Full name of the Student
+     * @param name Full name of the entity.Student
      * @param uid  School ID number of the student
      */
     public void enrollStudent(String name, String uid) {
@@ -54,7 +57,7 @@ public class AttendanceSystemController {
     }
 
     /**
-     * Toggle attendance of a Student.
+     * Toggle attendance of a entity.Student.
      *
      * @param uid  the School ID of a student
      * @param date the date of the attendance in yyyy-MM-dd format

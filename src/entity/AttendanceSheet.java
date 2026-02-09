@@ -1,14 +1,17 @@
+package entity;
+
+import java.io.Serializable;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AttendanceSheet {
+public class AttendanceSheet implements Serializable {
     private final LocalDate date;
     private final Map<Integer, Boolean> attendanceRoster;
 
 
-    AttendanceSheet(LocalDate date, Map<Integer, Boolean> attendanceRoster) {
+    public AttendanceSheet(LocalDate date, Map<Integer, Boolean> attendanceRoster) {
         this.date = date;
         this.attendanceRoster = attendanceRoster;
     }
@@ -18,7 +21,7 @@ public class AttendanceSheet {
     }
 
     public void markAbsent(int studentUID) {
-        if (attendanceRoster.replace(studentUID, false) == null) throw new RuntimeException("Student does not exists");
+        if (attendanceRoster.replace(studentUID, false) == null) throw new RuntimeException("entity.Student does not exists");
     }
 
     public void markPresent(int studentUID) {

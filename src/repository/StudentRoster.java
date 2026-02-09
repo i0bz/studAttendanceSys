@@ -1,12 +1,17 @@
+package repository;
+
+import entity.Student;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StudentRoster {
-    private final HashMap<Integer,Student> studentRoster;
+public class StudentRoster implements Serializable {
+    private final HashMap<Integer, Student> studentRoster;
 
-    StudentRoster() {
+    public StudentRoster() {
         studentRoster = new HashMap<>();
     }
 

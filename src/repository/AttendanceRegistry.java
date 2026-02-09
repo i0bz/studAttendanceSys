@@ -1,11 +1,16 @@
+package repository;
+
+import entity.AttendanceSheet;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-public class AttendanceRegistry {
+public class AttendanceRegistry implements Serializable {
     private final HashMap<LocalDate, AttendanceSheet> registry;
     private final StudentRoster roster;
 
-    AttendanceRegistry(StudentRoster roster) {
+    public AttendanceRegistry(StudentRoster roster) {
         this.registry = new HashMap<>();
         this.roster = roster;
     }
