@@ -1,10 +1,23 @@
+
+package controllers;
+
+
+//Domains
+import entity.AttendanceSheet;
+
+//Services
 import services.StudentAttendanceService;
 import services.StudentManagementService;
+
+//Utilities
 import utility.ParseUtility;
+import java.util.List;
+
+import java.time.LocalDate;
 
 public class AttendanceSystemController {
     private final StudentManagementService studentManagement;
-    private final StudentAttendanceService AttendanceService;
+    private final StudentAttendanceService attendanceService;
 
     /**
      * Instantiates a new Attendance system controller.
@@ -14,7 +27,7 @@ public class AttendanceSystemController {
      */
     public AttendanceSystemController(StudentManagementService managementService, StudentAttendanceService attendanceService) {
         this.studentManagement = managementService;
-        this.AttendanceService = attendanceService;
+        this.attendanceService = attendanceService;
     }
 
 
@@ -44,7 +57,7 @@ public class AttendanceSystemController {
      * @param date Date in yyyy-MM-dd format
      */
     public void addAttendance(String date) {
-        AttendanceService.createAttendance(ParseUtility.parseDate(date));
+        attendanceService.createAttendance(ParseUtility.parseDate(date));
     }
 
     /**
@@ -53,7 +66,7 @@ public class AttendanceSystemController {
      * @param date Date in yyyy-MM-dd format
      */
     public void removeAttendance(String date) {
-        AttendanceService.deleteAttendance(ParseUtility.parseDate(date));
+        attendanceService.deleteAttendance(ParseUtility.parseDate(date));
     }
 
     /**
@@ -63,6 +76,16 @@ public class AttendanceSystemController {
      * @param date the date of the attendance in yyyy-MM-dd format
      */
     public void toggleAttendance(String uid, String date) {
-        AttendanceService.toggleAttendance(ParseUtility.parseDate(date), ParseUtility.parseUID(uid));
+        attendanceService.toggleAttendance(ParseUtility.parseDate(date), ParseUtility.parseUID(uid));
+    }
+
+    public List<String> attendanceStudentLists(String date) {
+        LocalDate parsedDate = ParseUtility.parseDate(date);
+        AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
+        return sheet.attendanceStudentsList().stream().map(ParseUtility::unparseUID).toList();
+    }
+
+    public List<String> attendanceDateLists() {
+        return attendanceService.attendanceDateLists().stream().map(LocalDate::toString).toList();
     }
 }

@@ -4,6 +4,7 @@ import entity.AttendanceSheet;
 import repository.AttendanceRegistry;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class StudentAttendanceService {
     private final AttendanceRegistry registry;
@@ -27,8 +28,11 @@ public class StudentAttendanceService {
         attendances.toggleAttendance(uid);
     }
 
+    public List<LocalDate> attendanceDateLists() {
+        return registry.attendanceDateLists();
+    }
 
-    private AttendanceSheet queryAttendance(LocalDate date) {
+    public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.queryAttendance(date);
     }
 

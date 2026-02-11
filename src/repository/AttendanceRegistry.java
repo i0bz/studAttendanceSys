@@ -4,7 +4,9 @@ import entity.AttendanceSheet;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class AttendanceRegistry implements Serializable {
     private final HashMap<LocalDate, AttendanceSheet> registry;
@@ -26,5 +28,8 @@ public class AttendanceRegistry implements Serializable {
         return registry.get(date);
     }
 
+    public List<LocalDate> attendanceDateLists() {
+        return new ArrayList<>(registry.keySet());
+    }
 
 }
