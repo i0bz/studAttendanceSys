@@ -4,6 +4,7 @@ import controllers.*;
 
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -97,11 +98,17 @@ public class CommandLineInterface {
     }
 
     private void listStudentNames() {
-        List<String> roster = attendanceSystem.rosterNameLists();
+
+        System.out.println("");
+        System.out.println("");
+        Map<String, String> roster = attendanceSystem.rosterLists();
         int i = 0;
-        for (String student : roster) {
-            System.out.println( ++i + ". " + student);
+        for (Map.Entry<String, String> student : roster.entrySet()) {
+            System.out.printf("%d. %s\t%s\n", ++i, student.getValue(), student.getKey());
         }
+        System.out.println("");
+        System.out.println("");
+
     }
 
 

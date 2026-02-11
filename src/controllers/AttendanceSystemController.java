@@ -11,9 +11,14 @@ import services.StudentManagementService;
 
 //Utilities
 import utility.ParseUtility;
+
+import javax.lang.model.type.MirroredTypeException;
+import java.util.AbstractMap;
 import java.util.List;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AttendanceSystemController {
     private final StudentManagementService studentManagement;
@@ -86,11 +91,36 @@ public class AttendanceSystemController {
     }
 
     public List<String> attendanceDateLists() {
-        return attendanceService.attendanceDateLists().stream().map(LocalDate::toString).toList();
+        return attendanceService.attendanceDateLists()
+                .stream()
+                .map(LocalDate::toString)
+                .toList();
     }
 
 
     public List<String> rosterNameLists() {
         return studentManagement.queryAllStudentName();
     }
+
+    public Map<String, String> rosterLists() {
+        return studentManagement.queryAllStudent()
+                .entrySet()
+                .stream()
+                .collect(Collectors
+                        .toMap(entry -> ParseUtility.unparseUID(entry.getKey()),
+                                entry -> entry.getValue().name()));
+    }
+
+    public Map<String, String> attendanceRoster(String date) {
+        AttendanceSheet attendanceSheet = attendanceService.queryAttendance(ParseUtility.parseDate(date));
+
+        return studentManagement.queryAllStudent()
+                .entrySet()
+                .stream()
+                .filter(entry -> attendanceSheet.attendanceStudentsList().contains(entry.getKey()))
+                .collect(Collectors.toMap(entry -> ParseUtility.unparseUID(entry.getKey()),
+                        entry -> entry.getValue().name()));
+
+    }
+
 }

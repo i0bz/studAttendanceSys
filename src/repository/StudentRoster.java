@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StudentRoster implements Serializable {
     private final HashMap<Integer, Student> studentRoster;
@@ -33,6 +34,10 @@ public class StudentRoster implements Serializable {
     }
     public boolean studentExists(int uid) {
         return studentRoster.containsKey(uid);
+    }
+
+    public Map<Integer, Student> queryAllStudent() {
+        return studentRoster;
     }
 
     public List<Integer> queryAllStudentId() {

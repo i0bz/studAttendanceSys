@@ -4,12 +4,13 @@ import repository.StudentRoster;
 import services.StudentAttendanceService;
 import services.StudentManagementService;
 import ui.CommandLineInterface;
+import utility.Persist;
 
 public class Main {
     static void main(String[] args) {
 
-        StudentRoster roster = new StudentRoster();
-        AttendanceRegistry registry = new AttendanceRegistry(roster);
+        StudentRoster roster = Persist.loadRoster();
+        AttendanceRegistry registry = Persist.loadRegistry(roster);
         StudentAttendanceService attendanceService = new StudentAttendanceService(registry);
         StudentManagementService managementService = new StudentManagementService(roster);
         AttendanceSystemController controller = new AttendanceSystemController(managementService, attendanceService);
@@ -22,6 +23,7 @@ public class Main {
             }
         }
 
-
+        Persist.saveRosterFile(roster);
+        Persist.saveRegistry(registry);
     }
 }
