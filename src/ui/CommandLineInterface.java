@@ -23,13 +23,14 @@ public class CommandLineInterface {
         while (decision != 3) {
             System.out.println("1. Enroll Student");
             System.out.println("2. Drop Student");
-            System.out.println("3. Return");
+            System.out.println("3. List Roster");
+            System.out.println("4. Return");
             System.out.print("Enter choice: ");
 
             decision = input.nextInt();
 
-            while (decision <= 0 || decision >= 4) {
-                System.out.print("Enter 1, 2, 3 only: ");
+            while (decision <= 0 || decision >= 5) {
+                System.out.print("Enter 1, 2, 3 and 4 only: ");
                 decision = input.nextInt();
             }
 
@@ -45,6 +46,9 @@ public class CommandLineInterface {
                     dropStudent();
                     break;
                 case 3:
+                    listStudentNames();
+                    break;
+                case 4:
                     return;
             }
         }
@@ -92,6 +96,14 @@ public class CommandLineInterface {
 
     }
 
+    private void listStudentNames() {
+        List<String> roster = attendanceSystem.rosterNameLists();
+        int i = 0;
+        for (String student : roster) {
+            System.out.println( ++i + ". " + student);
+        }
+    }
+
 
     private void attendanceManagementUI() {
         int decision = 0;
@@ -127,6 +139,7 @@ public class CommandLineInterface {
         }
 
     }
+
 
 
     private void createAttendance() {

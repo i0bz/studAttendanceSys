@@ -88,4 +88,9 @@ public class AttendanceSystemController {
     public List<String> attendanceDateLists() {
         return attendanceService.attendanceDateLists().stream().map(LocalDate::toString).toList();
     }
+
+
+    public List<String> rosterNameLists() {
+        return studentManagement.queryAllStudentName();
+    }
 }

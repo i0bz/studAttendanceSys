@@ -38,4 +38,7 @@ public class StudentRoster implements Serializable {
     public List<Integer> queryAllStudentId() {
         return new ArrayList<>(studentRoster.keySet());
     }
+    public List<String> queryAllStudentName() {
+        return studentRoster.values().stream().map(Student::name).toList();
+    }
 }

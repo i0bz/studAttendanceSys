@@ -3,6 +3,8 @@ package services;
 import entity.Student;
 import repository.StudentRoster;
 
+import java.util.List;
+
 public class StudentManagementService {
     private final StudentRoster roster;
 
@@ -14,5 +16,8 @@ public class StudentManagementService {
     }
     public void dropStudent(int uid) {
         roster.dropStudentFromRoster(uid);
+    }
+    public List<String> queryAllStudentName() {
+        return roster.queryAllStudentName();
     }
 }
