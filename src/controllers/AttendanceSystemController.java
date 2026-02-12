@@ -18,6 +18,7 @@ import java.util.List;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class AttendanceSystemController {
@@ -103,12 +104,12 @@ public class AttendanceSystemController {
     }
 
     public Map<String, String> rosterLists() {
-        return studentManagement.queryAllStudent()
+        return new TreeMap<>(studentManagement.queryAllStudent()
                 .entrySet()
                 .stream()
                 .collect(Collectors
                         .toMap(entry -> ParseUtility.unparseUID(entry.getKey()),
-                                entry -> entry.getValue().name()));
+                                entry -> entry.getValue().name())));
     }
 
     public Map<String, String> attendanceRoster(String date) {

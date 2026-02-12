@@ -7,17 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 public class StudentManagementService {
+
     private final StudentRoster roster;
 
     public StudentManagementService(StudentRoster roster) {
         this.roster = roster;
     }
+
+
+    //Student Management
     public void enrollStudent(String name, int uid) {
         roster.addStudentToRoster(new Student(name, uid));
     }
     public void dropStudent(int uid) {
         roster.dropStudentFromRoster(uid);
     }
+
+    //Query functions
     public List<String> queryAllStudentName() {
         return roster.queryAllStudentName();
     }
@@ -27,4 +33,6 @@ public class StudentManagementService {
     public List<Integer> queryAllStudentId() {
         return roster.queryAllStudentId();
     }
+
+
 }

@@ -6,9 +6,13 @@ import repository.StudentRoster;
 import java.io.*;
 
 public class Persist {
+
     static final String attendanceFile = "./attendances.dat";
     static final String studentRosterFile = "./roster.dat";
 
+    /*
+    Saving
+     */
     public static void saveRegistry(AttendanceRegistry registry) {
         try (FileOutputStream ofs = new FileOutputStream(attendanceFile);
              ObjectOutputStream objectStream = new ObjectOutputStream(ofs))
@@ -18,7 +22,6 @@ public class Persist {
             e.printStackTrace();
         }
     }
-
     public static void saveRosterFile(StudentRoster roster) {
         try (FileOutputStream ofs = new FileOutputStream(studentRosterFile);
              ObjectOutputStream objectStream = new ObjectOutputStream(ofs))
@@ -29,6 +32,10 @@ public class Persist {
         }
     }
 
+
+    /*
+    Loading
+     */
     public static AttendanceRegistry loadRegistry(StudentRoster roster) {
         AttendanceRegistry reg = null;
         try (FileInputStream ifs = new FileInputStream(attendanceFile);
@@ -42,7 +49,6 @@ public class Persist {
 
         return reg;
     }
-
     public static StudentRoster loadRoster() {
         StudentRoster reg = null;
         try (FileInputStream ifs = new FileInputStream(studentRosterFile);

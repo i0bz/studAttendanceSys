@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AttendanceRegistry implements Serializable {
+
     private final HashMap<LocalDate, AttendanceSheet> registry;
     private final StudentRoster roster;
 
@@ -17,6 +18,8 @@ public class AttendanceRegistry implements Serializable {
         this.roster = roster;
     }
 
+
+    //Attendance Management
     public void addAttendance(LocalDate date) {
         registry.putIfAbsent(date, new AttendanceSheet(date, roster.rosterCopy()));
     }
@@ -24,10 +27,10 @@ public class AttendanceRegistry implements Serializable {
         registry.remove(date);
     }
 
+    //Query functions
     public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.get(date);
     }
-
     public List<LocalDate> attendanceDateLists() {
         return new ArrayList<>(registry.keySet());
     }

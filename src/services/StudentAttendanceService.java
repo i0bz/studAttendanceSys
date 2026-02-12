@@ -7,12 +7,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class StudentAttendanceService {
+
     private final AttendanceRegistry registry;
 
     public StudentAttendanceService(AttendanceRegistry registry) {
         this.registry = registry;
     }
 
+
+    //Attendance Management
     public void createAttendance(LocalDate date) {
         registry.addAttendance(date);
     }
@@ -21,6 +24,7 @@ public class StudentAttendanceService {
     }
 
 
+    //Attendance Manipulation
     public void toggleAttendance(LocalDate date, int uid) {
         AttendanceSheet attendances =  registry.queryAttendance(date);
         if (attendances == null) throw new RuntimeException("Date given has no attendance");
@@ -28,10 +32,11 @@ public class StudentAttendanceService {
         attendances.toggleAttendance(uid);
     }
 
+
+    //Query functions
     public List<LocalDate> attendanceDateLists() {
         return registry.attendanceDateLists();
     }
-
     public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.queryAttendance(date);
     }

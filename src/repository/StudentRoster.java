@@ -16,12 +16,17 @@ public class StudentRoster implements Serializable {
         studentRoster = new HashMap<>();
     }
 
+
+    //Student Roster Management
     public void addStudentToRoster(Student student) {
         studentRoster.putIfAbsent(student.uid(), student);
     }
     public void dropStudentFromRoster(int uid) {
         studentRoster.remove(uid);
     }
+
+
+    //Copy function
     public Map<Integer, Boolean> rosterCopy() {
         HashMap<Integer, Boolean> copy = new HashMap<>();
         for (Map.Entry<Integer, Student> entry : studentRoster.entrySet()) {
@@ -29,17 +34,18 @@ public class StudentRoster implements Serializable {
         }
         return copy;
     }
+
+
+    //Query functions
     public Student queryStudent(int uid) {
         return studentRoster.get(uid);
     }
     public boolean studentExists(int uid) {
         return studentRoster.containsKey(uid);
     }
-
     public Map<Integer, Student> queryAllStudent() {
         return studentRoster;
     }
-
     public List<Integer> queryAllStudentId() {
         return new ArrayList<>(studentRoster.keySet());
     }

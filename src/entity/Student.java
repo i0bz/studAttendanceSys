@@ -7,26 +7,30 @@ public class Student implements Serializable {
     private final String name;
     private final int uid;
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Student student)) return false;
-        return uid == student.uid;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(uid);
-    }
-
     public Student(String name, int uid) {
         this.name = name;
         this.uid = uid;
     }
 
+
+
+    //Hashing Functions
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Student student)) return false;
+        return uid == student.uid;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(uid);
+    }
+
+
+
+    //Getters
     public int uid() {
         return uid;
     }
-
     public String name() {
         return name;
     }

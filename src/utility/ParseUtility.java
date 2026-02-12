@@ -6,10 +6,11 @@ import java.time.format.DateTimeFormatter;
 public class ParseUtility {
     private ParseUtility() {}
 
+
+
     public static LocalDate parseDate(String date) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
-
 
     /**
      * Parse uid int.
