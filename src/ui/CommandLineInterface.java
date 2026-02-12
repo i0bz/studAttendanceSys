@@ -49,8 +49,9 @@ public class CommandLineInterface {
                 case 2:
                     attendanceManagementUI();
                     break;
-//                case 3:
-//                    break;
+                case 3:
+                    attendanceSystemUI();
+                    break;
                 case 4:
                     return;
             }
@@ -258,7 +259,7 @@ public class CommandLineInterface {
 
 
         for (String attendanceDate : attendanceLists) {
-            System.out.println(i++ + attendanceDate);
+            System.out.println(++i + ". " + attendanceDate);
         }
 
         System.out.println();
@@ -279,15 +280,37 @@ public class CommandLineInterface {
             }
         }
 
-        List<String> students = attendanceSystem.attendanceStudentLists(date);
-
+        List<String> studentUIDs = attendanceSystem.attendanceStudentUIDLists(date);
+        Map<String, String> rosterList = attendanceSystem.rosterLists();
         System.out.println();
         System.out.println();
 
         i = 0;
-        for (String student : students) {
-            System.out.println(++i + ". " + student);
+        for (String studentID : studentUIDs) {
+            System.out.println(++i + ". " + rosterList.get(studentID) + "\t " + studentID + attendanceSystem.isPresent(studentID, date) );
         }
+
+
+
+        String studentChosen;
+        System.out.println();
+        System.out.print("Select student to toggle: ");
+
+
+        decision = input.nextInt();
+        input.nextLine();
+
+        while (true) {
+            try {
+                studentChosen = studentUIDs.get(decision - 1);
+                break;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.print("Select valid number: ");
+                decision = input.nextInt();
+                input.nextLine();
+            }
+        }
+        attendanceSystem.toggleAttendance(studentChosen, date);
 
     }
 

@@ -12,8 +12,6 @@ import services.StudentManagementService;
 //Utilities
 import utility.ParseUtility;
 
-import javax.lang.model.type.MirroredTypeException;
-import java.util.AbstractMap;
 import java.util.List;
 
 import java.time.LocalDate;
@@ -85,10 +83,10 @@ public class AttendanceSystemController {
         attendanceService.toggleAttendance(ParseUtility.parseDate(date), ParseUtility.parseUID(uid));
     }
 
-    public List<String> attendanceStudentLists(String date) {
+    public List<String> attendanceStudentUIDLists(String date) {
         LocalDate parsedDate = ParseUtility.parseDate(date);
         AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
-        return sheet.attendanceStudentsList().stream().map(ParseUtility::unparseUID).toList();
+        return sheet.attendanceStudentsUIDList().stream().map(ParseUtility::unparseUID).toList();
     }
 
     public List<String> attendanceDateLists() {
@@ -98,6 +96,14 @@ public class AttendanceSystemController {
                 .toList();
     }
 
+    public boolean isPresent(String uid, String date) {
+        LocalDate parsedDate = ParseUtility.parseDate(date);
+        int studentID = ParseUtility.parseUID(uid);
+
+        AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
+
+        return sheet.isPresent(studentID);
+    }
 
     public List<String> rosterNameLists() {
         return studentManagement.queryAllStudentName();
@@ -118,7 +124,7 @@ public class AttendanceSystemController {
         return studentManagement.queryAllStudent()
                 .entrySet()
                 .stream()
-                .filter(entry -> attendanceSheet.attendanceStudentsList().contains(entry.getKey()))
+                .filter(entry -> attendanceSheet.attendanceStudentsUIDList().contains(entry.getKey()))
                 .collect(Collectors.toMap(entry -> ParseUtility.unparseUID(entry.getKey()),
                         entry -> entry.getValue().name()));
 

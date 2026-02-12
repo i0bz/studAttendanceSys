@@ -33,7 +33,7 @@ public class AttendanceSheet implements Serializable {
 
     //Attendance Checkers
     public boolean hasStudent(int studentUID) {
-        return attendanceRoster.get(studentUID);
+        return attendanceRoster.containsKey(studentUID);
     }
     public boolean isPresent(int studentUID) {
         return attendanceRoster.containsKey(studentUID);
@@ -43,7 +43,7 @@ public class AttendanceSheet implements Serializable {
 
 
     //Query
-    public List<Integer> attendanceStudentsList() {
+    public List<Integer> attendanceStudentsUIDList() {
         return new ArrayList<>(attendanceRoster.keySet());
     }
 
