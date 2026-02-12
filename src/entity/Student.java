@@ -3,7 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Student implements Serializable {
+public class Student implements Serializable,Comparable<Student> {
     private final String name;
     private final int uid;
 
@@ -13,6 +13,13 @@ public class Student implements Serializable {
     }
 
 
+
+
+    //Comparing Functions
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(this.uid, other.uid);
+    }
 
     //Hashing Functions
     @Override
@@ -24,7 +31,6 @@ public class Student implements Serializable {
     public int hashCode() {
         return Objects.hashCode(uid);
     }
-
 
 
     //Getters

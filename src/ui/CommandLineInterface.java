@@ -24,7 +24,7 @@ public class CommandLineInterface {
     CLI control flows
      */
     public void managementUI() {
-        int decision = 0;
+        int decision;
 
         while (true) {
 
@@ -167,7 +167,7 @@ public class CommandLineInterface {
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Invalid UID!!!");
-                System.out.println("Reenter: ");
+                System.out.print("Reenter: ");
                 uid = input.nextLine();
             }
         }
@@ -176,15 +176,15 @@ public class CommandLineInterface {
     }
     private void listStudentNames() {
 
-        System.out.println("");
-        System.out.println("");
+        System.out.println();
+        System.out.println();
         Map<String, String> roster = attendanceSystem.rosterLists();
         int i = 0;
         for (Map.Entry<String, String> student : roster.entrySet()) {
             System.out.printf("%d. %s\t%s\n", ++i, student.getValue(), student.getKey());
         }
-        System.out.println("");
-        System.out.println("");
+        System.out.println();
+        System.out.println();
 
     }
 
@@ -203,7 +203,7 @@ public class CommandLineInterface {
                 break;
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid Date!!!");
-                System.out.println("Reenter: ");
+                System.out.print("Reenter: ");
                 date = input.nextLine();
             }
         }
@@ -221,7 +221,7 @@ public class CommandLineInterface {
                 break;
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid Date!!!");
-                System.out.println("Reenter: ");
+                System.out.print("Reenter: ");
                 date = input.nextLine();
             }
         }
@@ -243,20 +243,53 @@ public class CommandLineInterface {
 
 
 
-//    private void attendanceSystemUI() {
-//        List<String> attendanceLists = attendanceSystem.attendanceDateLists();
-//        int i = 0, decision = 0;
-//
-//        if (attendanceLists.isEmpty()) {
-//            System.out.println("There are no registered attendances.");
-//            return;
-//        }
-//
-//        for (String attendanceDate : attendanceLists) {
-//            System.out.println(i++ + attendanceDate);
-//        }
-//        System.out.print("Select Attendance: ");
-//
-//        return;
-//    }
+    private void attendanceSystemUI() {
+        List<String> attendanceLists = attendanceSystem.attendanceDateLists();
+        int i = 0, decision;
+
+
+        System.out.println();
+        System.out.println();
+        if (attendanceLists.isEmpty()) {
+            System.out.println("There are no registered attendances.");
+            return;
+        }
+
+
+
+        for (String attendanceDate : attendanceLists) {
+            System.out.println(i++ + attendanceDate);
+        }
+
+        System.out.println();
+        System.out.print("Select Attendance: ");
+        decision = input.nextInt();
+        input.nextLine();
+
+        String date;
+
+        while (true) {
+            try {
+                date = attendanceLists.get(decision - 1);
+                break;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.print("Select valid number: ");
+                decision = input.nextInt();
+                input.nextLine();
+            }
+        }
+
+        List<String> students = attendanceSystem.attendanceStudentLists(date);
+
+        System.out.println();
+        System.out.println();
+
+        i = 0;
+        for (String student : students) {
+            System.out.println(++i + ". " + student);
+        }
+
+    }
+
+
 }
