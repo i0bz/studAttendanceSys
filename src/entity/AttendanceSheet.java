@@ -22,14 +22,6 @@ public class AttendanceSheet implements Serializable {
         attendanceRoster.computeIfPresent(studentUID, (key, value) -> !value);
     }
 
-//    public void markAbsent(int studentUID) {
-//        if (attendanceRoster.replace(studentUID, false) == null) throw new RuntimeException("entity.Student does not exist");
-//    }
-//    public void markPresent(int studentUID) {
-//        attendanceRoster.replace(studentUID, true);
-//    }
-
-
 
     //Attendance Checkers
     public boolean hasStudent(int studentUID) {
