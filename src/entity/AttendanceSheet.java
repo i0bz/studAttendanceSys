@@ -1,46 +1,86 @@
 package entity;
 
+import repository.StudentRoster;
+
 import java.io.Serializable;
 import java.time.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 public class AttendanceSheet implements Serializable {
     private final LocalDate date;
-    private final Map<Integer, Boolean> attendanceRoster;
+    private final ArrayList<Student> attendanceRoster;
+    private final StudentRoster studentRoster;
 
 
-    public AttendanceSheet(LocalDate date, Map<Integer, Boolean> attendanceRoster) {
+    /**
+     * Instantiates a new Attendance sheet.
+     *
+     * @param date          the date
+     * @param studentRoster the student roster
+     */
+    public AttendanceSheet(LocalDate date, StudentRoster studentRoster) {
         this.date = date;
-        this.attendanceRoster = attendanceRoster;
+        this.attendanceRoster = new ArrayList<>();
+        this.studentRoster = studentRoster;
     }
 
 
     //Attendance Manipulation
+
+    /**
+     * Toggle attendance.
+     *
+     * @param studentUID the student uid
+     * @throws NoSuchElementException If the student uid given does not exist in the roster.
+     */
     public void toggleAttendance(int studentUID) {
-        attendanceRoster.computeIfPresent(studentUID, (key, value) -> !value);
+        if (!studentRoster.studentExists(studentUID)) throw new NoSuchElementException("Student does not exist in the roster.");
+        Student student = studentRoster.queryStudent(studentUID);
+        if (!attendanceRoster.contains(student)) attendanceRoster.add(student);
+        else attendanceRoster.remove(student);
     }
 
 
     //Attendance Checkers
-    public boolean hasStudent(int studentUID) {
-        return attendanceRoster.containsKey(studentUID);
-    }
+    /**
+     * Check if student is present.
+     *
+     * @param studentUID the student uid
+     * @return the boolean
+     */
     public boolean isPresent(int studentUID) {
-        return attendanceRoster.get(studentUID);
+        return attendanceRoster.contains(studentRoster.queryStudent(studentUID));
     }
-
-
 
 
     //Query
-    public List<Integer> attendanceStudentsUIDList() {
-        return new ArrayList<>(attendanceRoster.keySet());
+    /**
+     * Attendance students uid list in a sorted set.
+     *
+     * @return the sorted set
+     */
+    public SortedSet<Integer> attendanceStudentsUIDList() {
+        return attendanceRoster.stream().map(Student::uid).collect(Collectors.toCollection(TreeSet::new));
+    }
+    /**
+     * Attendance students name list sorted set.
+     *
+     * @return the sorted set
+     */
+    public List<String> attendanceStudentsNameList() {
+        return attendanceRoster.stream().map(Student::name).sorted().collect(Collectors.toCollection(ArrayList::new));
     }
 
 
-    //Getter
+
+//Getter
+    /**
+     * Getter for date.
+     *
+     * @return the local date
+     */
     public LocalDate date(){
         return this.date;
     }

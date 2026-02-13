@@ -274,7 +274,7 @@ public class CommandLineInterface {
             }
         }
 
-        List<String> studentUIDs = attendanceSystem.attendanceStudentUIDLists(date);
+        List<String> studentUIDs =
         Map<String, String> rosterList = attendanceSystem.rosterLists();
         System.out.println();
         System.out.println();

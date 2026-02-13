@@ -12,11 +12,9 @@ import services.StudentManagementService;
 //Utilities
 import utility.ParseUtility;
 
-import java.util.List;
+import java.util.*;
 
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class AttendanceSystemController {
@@ -34,7 +32,7 @@ public class AttendanceSystemController {
         this.attendanceService = attendanceService;
     }
 
-
+    //Student Management
     /**
      * Drop student.
      *
@@ -43,7 +41,6 @@ public class AttendanceSystemController {
     public void dropStudent(String uid) {
         studentManagement.dropStudent(ParseUtility.parseUID(uid));
     }
-
     /**
      * Enroll student.
      *
@@ -55,6 +52,9 @@ public class AttendanceSystemController {
     }
 
 
+
+
+    //Attendance Management
     /**
      * Adds an attendance for a particular date.
      *
@@ -63,7 +63,6 @@ public class AttendanceSystemController {
     public void addAttendance(String date) {
         attendanceService.createAttendance(ParseUtility.parseDate(date));
     }
-
     /**
      * Removes attendance.
      *
@@ -72,30 +71,18 @@ public class AttendanceSystemController {
     public void removeAttendance(String date) {
         attendanceService.deleteAttendance(ParseUtility.parseDate(date));
     }
-
     /**
      * Toggle attendance of a entity.Student.
      *
      * @param uid  the School ID of a student
      * @param date the date of the attendance in yyyy-MM-dd format
      */
+
+
+    //Attendance System
     public void toggleAttendance(String uid, String date) {
         attendanceService.toggleAttendance(ParseUtility.parseDate(date), ParseUtility.parseUID(uid));
     }
-
-    public List<String> attendanceStudentUIDLists(String date) {
-        LocalDate parsedDate = ParseUtility.parseDate(date);
-        AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
-        return sheet.attendanceStudentsUIDList().stream().map(ParseUtility::unparseUID).toList();
-    }
-
-    public List<String> attendanceDateLists() {
-        return attendanceService.attendanceDateLists()
-                .stream()
-                .map(LocalDate::toString)
-                .toList();
-    }
-
     public boolean isPresent(String uid, String date) {
         LocalDate parsedDate = ParseUtility.parseDate(date);
         int studentID = ParseUtility.parseUID(uid);
@@ -105,10 +92,19 @@ public class AttendanceSystemController {
         return sheet.isPresent(studentID);
     }
 
+
+    public List<String> attendanceDateLists() {
+        return attendanceService.attendanceDateList()
+                .stream()
+                .map(LocalDate::toString)
+                .toList();
+    }
+
+
+    //Querying (Student Management specific)
     public List<String> rosterNameLists() {
         return studentManagement.queryAllStudentName();
     }
-
     public Map<String, String> rosterLists() {
         return new TreeMap<>(studentManagement.queryAllStudent()
                 .entrySet()
@@ -118,6 +114,13 @@ public class AttendanceSystemController {
                                 entry -> entry.getValue().name())));
     }
 
+
+    //Querying (Attendance specific)
+    public SortedSet<String> attendanceStudentUIDLists(String date) {
+        LocalDate parsedDate = ParseUtility.parseDate(date);
+        AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
+        return sheet.attendanceStudentsUIDList().stream().map(ParseUtility::unparseUID).collect(Collectors.toCollection(TreeSet::new));
+    }
     public Map<String, String> attendanceRoster(String date) {
         AttendanceSheet attendanceSheet = attendanceService.queryAttendance(ParseUtility.parseDate(date));
 
@@ -127,7 +130,6 @@ public class AttendanceSystemController {
                 .filter(entry -> attendanceSheet.attendanceStudentsUIDList().contains(entry.getKey()))
                 .collect(Collectors.toMap(entry -> ParseUtility.unparseUID(entry.getKey()),
                         entry -> entry.getValue().name()));
-
     }
 
 }

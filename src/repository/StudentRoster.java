@@ -26,15 +26,6 @@ public class StudentRoster implements Serializable {
     }
 
 
-    //Copy function
-    public Map<Integer, Boolean> rosterCopy() {
-        HashMap<Integer, Boolean> copy = new HashMap<>();
-        for (Map.Entry<Integer, Student> entry : studentRoster.entrySet()) {
-            copy.putIfAbsent(entry.getValue().uid(), false);
-        }
-        return copy;
-    }
-
 
     //Query functions
     public Student queryStudent(int uid) {

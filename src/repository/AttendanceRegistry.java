@@ -20,19 +20,41 @@ public class AttendanceRegistry implements Serializable {
 
 
     //Attendance Management
+    /**
+     * Add attendance sheet.
+     *
+     * @param date the date
+     */
     public void addAttendance(LocalDate date) {
-        registry.putIfAbsent(date, new AttendanceSheet(date, roster.rosterCopy()));
+        registry.putIfAbsent(date, new AttendanceSheet(date, roster));
     }
+    /**
+     * Remove attendance sheet.
+     *
+     * @param date the date
+     */
     public void removeAttendance(LocalDate date) {
         registry.remove(date);
     }
 
+
+
     //Query functions
+    /**
+     * Query attendance sheet.
+     *
+     * @param date the date
+     * @return the attendance sheet
+     */
     public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.get(date);
     }
-    public List<LocalDate> attendanceDateLists() {
-        return new ArrayList<>(registry.keySet());
+    /**
+     * Attendance date list.
+     *
+     * @return the list
+     */
+    public List<LocalDate> attendanceDateList() {
+        return new ArrayList<>(registry.keySet()).stream().sorted().toList();
     }
-
 }

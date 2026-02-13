@@ -28,14 +28,13 @@ public class StudentAttendanceService {
     public void toggleAttendance(LocalDate date, int uid) {
         AttendanceSheet attendances =  registry.queryAttendance(date);
         if (attendances == null) throw new RuntimeException("Date given has no attendance");
-        if (!attendances.hasStudent(uid)) throw new RuntimeException("entity.Student not in Attendance Roster");
         attendances.toggleAttendance(uid);
     }
 
 
     //Query functions
-    public List<LocalDate> attendanceDateLists() {
-        return registry.attendanceDateLists();
+    public List<LocalDate> attendanceDateList() {
+        return registry.attendanceDateList();
     }
     public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.queryAttendance(date);
