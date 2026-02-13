@@ -3,6 +3,7 @@ package ui;
 import controllers.*;
 
 import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -34,11 +35,11 @@ public class CommandLineInterface {
             System.out.println("4. Exit");
             System.out.print("Enter choice: ");
 
-            decision = input.nextInt();
+            decision = safeIntInput();
 
             while (decision <= 0 || decision >= 5) {
                 System.out.print("Enter 1, 2, 3, and 4 only: ");
-                decision = input.nextInt();
+                decision = safeIntInput();
             }
 
 
@@ -69,17 +70,14 @@ public class CommandLineInterface {
             System.out.println("4. Return");
             System.out.print("Enter choice: ");
 
-            decision = input.nextInt();
+            decision = safeIntInput();
 
             while (decision <= 0 || decision >= 5) {
                 System.out.print("Enter 1, 2, 3 and 4 only: ");
-                decision = input.nextInt();
+                decision = safeIntInput();
             }
 
 
-
-
-            input.nextLine();
             switch (decision) {
                 case 1:
                     addStudent();
@@ -107,15 +105,13 @@ public class CommandLineInterface {
             System.out.println("4. Return");
             System.out.print("Enter choice: ");
 
-            decision = input.nextInt();
+            decision = safeIntInput();
 
             while (decision <= 0 || decision >= 5) {
                 System.out.print("Enter 1, 2, 3 and 4 only: ");
-                decision = input.nextInt();
+                decision = safeIntInput();
             }
 
-
-            input.nextLine();
 
             switch (decision) {
                 case 1:
@@ -264,8 +260,7 @@ public class CommandLineInterface {
 
         System.out.println();
         System.out.print("Select Attendance: ");
-        decision = input.nextInt();
-        input.nextLine();
+        decision = safeIntInput();
 
         String date;
 
@@ -275,8 +270,7 @@ public class CommandLineInterface {
                 break;
             } catch (IndexOutOfBoundsException e) {
                 System.out.print("Select valid number: ");
-                decision = input.nextInt();
-                input.nextLine();
+                decision = safeIntInput();
             }
         }
 
@@ -287,7 +281,7 @@ public class CommandLineInterface {
 
         i = 0;
         for (String studentID : studentUIDs) {
-            System.out.println(++i + ". " + rosterList.get(studentID) + "\t " + studentID + attendanceSystem.isPresent(studentID, date) );
+            System.out.println(++i + ". " + rosterList.get(studentID) + "\t " + studentID + " " + attendanceSystem.isPresent(studentID, date) );
         }
 
 
@@ -297,17 +291,16 @@ public class CommandLineInterface {
         System.out.print("Select student to toggle: ");
 
 
-        decision = input.nextInt();
-        input.nextLine();
+        decision = safeIntInput();
 
         while (true) {
             try {
+                if (studentUIDs.size() < decision) return;
                 studentChosen = studentUIDs.get(decision - 1);
                 break;
             } catch (IndexOutOfBoundsException e) {
                 System.out.print("Select valid number: ");
-                decision = input.nextInt();
-                input.nextLine();
+                decision = safeIntInput();
             }
         }
         attendanceSystem.toggleAttendance(studentChosen, date);
@@ -315,4 +308,18 @@ public class CommandLineInterface {
     }
 
 
+
+
+
+    private int safeIntInput() {
+        int tmp;
+        try {
+            tmp = input.nextInt();
+            input.nextLine();
+        } catch (InputMismatchException e) {
+            input.nextLine();
+            return -1;
+        }
+        return tmp;
+    }
 }

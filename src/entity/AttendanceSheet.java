@@ -36,7 +36,7 @@ public class AttendanceSheet implements Serializable {
         return attendanceRoster.containsKey(studentUID);
     }
     public boolean isPresent(int studentUID) {
-        return attendanceRoster.containsKey(studentUID);
+        return attendanceRoster.get(studentUID);
     }
 
 
