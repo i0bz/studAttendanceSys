@@ -63,6 +63,6 @@ public class AttendanceRegistry implements Serializable {
      * @return the list
      */
     public SortedSet<LocalDate> attendanceDateList() {
-        return registry.keySet().stream().sorted().collect(Collectors.toCollection(TreeSet::new));
+        return new TreeSet<>(registry.keySet());
     }
 }
