@@ -22,11 +22,11 @@ public class CommandLineInterface {
     CLI control flows
      */
     public void managementUI() {
-        System.out.println();
         int decision;
 
         while (true) {
 
+            System.out.println();
             System.out.println("1. Student Management");
             System.out.println("2. Attendance Management");
             System.out.println("3. Attendance System");
