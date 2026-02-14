@@ -150,7 +150,7 @@ public class CommandLineInterface {
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Invalid UID!!!");
-                System.out.println("Reenter: ");
+                System.out.print("Reenter: ");
                 uid = input.nextLine();
             }
         }
