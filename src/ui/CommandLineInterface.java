@@ -147,11 +147,13 @@ public class CommandLineInterface {
 
         System.out.print("Enter name: ");
         String name = input.nextLine();
+        if (name.equals("q")) return;
         System.out.print("Enter valid uid: ");
         String uid = input.nextLine();
 
         while (true) {
             try {
+                if (uid.equals("q")) return;
                 attendanceSystem.enrollStudent(name, uid);
                 break;
             } catch (RuntimeException e) {
@@ -171,6 +173,7 @@ public class CommandLineInterface {
 
         while (true) {
             try {
+                if (uid.equals("q")) return;
                 attendanceSystem.dropStudent(uid);
                 break;
             } catch (RuntimeException e) {
@@ -207,6 +210,7 @@ public class CommandLineInterface {
 
         while (true) {
             try {
+                if (date.equals("q")) return;
                 attendanceSystem.addAttendance(date);
                 break;
             } catch (DateTimeParseException e) {
@@ -226,6 +230,7 @@ public class CommandLineInterface {
 
         while (true) {
             try {
+                if (date.equals("q")) return;
                 attendanceSystem.removeAttendance(date);
                 break;
             } catch (DateTimeParseException e) {
