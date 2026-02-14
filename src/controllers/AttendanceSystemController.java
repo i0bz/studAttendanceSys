@@ -94,7 +94,7 @@ public class AttendanceSystemController {
 
 
     public List<String> attendanceDateLists() {
-        return attendanceService.attendanceDateList()
+        return attendanceService.queryAttendanceDateList()
                 .stream()
                 .map(LocalDate::toString)
                 .toList();
@@ -119,7 +119,10 @@ public class AttendanceSystemController {
     public SortedSet<String> attendanceStudentUIDLists(String date) {
         LocalDate parsedDate = ParseUtility.parseDate(date);
         AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
-        return sheet.attendanceStudentsUIDList().stream().map(ParseUtility::unparseUID).collect(Collectors.toCollection(TreeSet::new));
+        return sheet.attendanceStudentsSet()
+                .stream()
+                .map(student -> ParseUtility.unparseUID(student.uid()))
+                .collect(Collectors.toCollection(TreeSet::new));
     }
     public Map<String, String> attendanceRoster(String date) {
         AttendanceSheet attendanceSheet = attendanceService.queryAttendance(ParseUtility.parseDate(date));
@@ -127,7 +130,7 @@ public class AttendanceSystemController {
         return studentManagement.queryAllStudent()
                 .entrySet()
                 .stream()
-                .filter(entry -> attendanceSheet.attendanceStudentsUIDList().contains(entry.getKey()))
+                .filter(entry -> attendanceSheet.attendanceStudentsSet().contains(entry.getKey()))
                 .collect(Collectors.toMap(entry -> ParseUtility.unparseUID(entry.getKey()),
                         entry -> entry.getValue().name()));
     }

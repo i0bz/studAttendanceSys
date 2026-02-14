@@ -3,8 +3,8 @@ package services;
 import entity.Student;
 import repository.StudentRoster;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StudentManagementService {
 
@@ -25,14 +25,18 @@ public class StudentManagementService {
 
     //Query functions
     public List<String> queryAllStudentName() {
-        return roster.queryAllStudentName();
+        return roster.queryAllStudent().entrySet()
+                .stream()
+                .map(entry -> entry.getValue().name())
+                .sorted()
+                .toList();
     }
+
     public Map<Integer, Student> queryAllStudent() {
         return roster.queryAllStudent();
     }
-    public List<Integer> queryAllStudentId() {
-        return roster.queryAllStudentId();
+    public SortedSet<Integer> queryAllStudentID() {
+        return new TreeSet<>(roster.queryAllStudent().keySet());
     }
-
 
 }

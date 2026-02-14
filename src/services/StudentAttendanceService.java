@@ -1,10 +1,12 @@
 package services;
 
 import entity.AttendanceSheet;
+import entity.Student;
 import repository.AttendanceRegistry;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StudentAttendanceService {
 
@@ -33,11 +35,24 @@ public class StudentAttendanceService {
 
 
     //Query functions
-    public List<LocalDate> attendanceDateList() {
+    public SortedSet<LocalDate> queryAttendanceDateList() {
         return registry.attendanceDateList();
     }
     public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.queryAttendance(date);
+    }
+    public List<String> queryAttendanceNames(LocalDate date) {
+        AttendanceSheet sheet = queryAttendance(date);
+        Set<Student> studentSet = sheet.attendanceStudentsSet();
+        return new ArrayList<>(studentSet.stream().map(Student::name).sorted().toList());
+    }
+    public SortedSet<Integer> queryAttendanceID(LocalDate date) {
+        AttendanceSheet sheet = queryAttendance(date);
+        return sheet.attendanceStudentsSet().stream().map(Student::uid).collect(Collectors.toCollection(TreeSet::new));
+    }
+    public Set<Map.Entry<Integer, String>> queryAttendanceStudents(LocalDate date) {
+        AttendanceSheet sheet = queryAttendance(date);
+        return sheet.attendanceStudentsSet().stream().map(student -> Map.entry(student.uid(),student.name())).collect(Collectors.toSet());
     }
 
 }

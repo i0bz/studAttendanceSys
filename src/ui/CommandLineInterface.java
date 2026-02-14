@@ -304,7 +304,7 @@ public class CommandLineInterface {
 
         String studentChosen;
         System.out.println();
-        System.out.print("Select student to toggle: ");
+        System.out.print("Select student to toggle (select number above to exit): ");
 
 
         decision = safeIntInput();

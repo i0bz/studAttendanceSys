@@ -1,17 +1,37 @@
 package entity;
 
+import repository.AttendanceRegistry;
 import repository.StudentRoster;
 
 import java.io.Serializable;
 import java.time.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
-public class AttendanceSheet implements Serializable {
+public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet> {
     private final LocalDate date;
-    private final ArrayList<Student> attendanceRoster;
+    private final Set<Student> attendanceRoster;
     private transient StudentRoster studentRoster;
+
+
+    //Comparing Functions
+    @Override
+    public int compareTo(AttendanceSheet other) {
+        return this.date.compareTo(other.date);
+    }
+
+    //Hashing Functions
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AttendanceSheet other)) return false;
+        return date == other.date;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(date);
+    }
+
+
 
 
     /**
@@ -22,9 +42,11 @@ public class AttendanceSheet implements Serializable {
      */
     public AttendanceSheet(LocalDate date, StudentRoster studentRoster) {
         this.date = date;
-        this.attendanceRoster = new ArrayList<>();
+        this.attendanceRoster = new HashSet<>();
         this.studentRoster = studentRoster;
     }
+
+
 
     public void setRoster(StudentRoster studentRoster) {
         this.studentRoster = studentRoster;
@@ -50,7 +72,7 @@ public class AttendanceSheet implements Serializable {
     public void markPresent(int studentUID) {
         if (!studentRoster.studentExists(studentUID)) return;
         Student student = studentRoster.queryStudent(studentUID);
-        if (!attendanceRoster.contains(student)) attendanceRoster.add(student);
+        attendanceRoster.add(student);
     }
 
 
@@ -72,16 +94,8 @@ public class AttendanceSheet implements Serializable {
      *
      * @return the sorted set
      */
-    public SortedSet<Integer> attendanceStudentsUIDList() {
-        return attendanceRoster.stream().map(Student::uid).collect(Collectors.toCollection(TreeSet::new));
-    }
-    /**
-     * Attendance students name list sorted set.
-     *
-     * @return the sorted set
-     */
-    public List<String> attendanceStudentsNameList() {
-        return attendanceRoster.stream().map(Student::name).sorted().collect(Collectors.toCollection(ArrayList::new));
+    public Set<Student> attendanceStudentsSet() {
+        return attendanceRoster;
     }
 
 

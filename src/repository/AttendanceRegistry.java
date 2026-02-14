@@ -4,10 +4,8 @@ import entity.AttendanceSheet;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AttendanceRegistry implements Serializable {
 
@@ -56,12 +54,15 @@ public class AttendanceRegistry implements Serializable {
     public AttendanceSheet queryAttendance(LocalDate date) {
         return registry.get(date);
     }
+
+
+
     /**
-     * Attendance date list.
+     * Attendance sorted date set.
      *
      * @return the list
      */
-    public List<LocalDate> attendanceDateList() {
-        return new ArrayList<>(registry.keySet()).stream().sorted().toList();
+    public SortedSet<LocalDate> attendanceDateList() {
+        return registry.keySet().stream().sorted().collect(Collectors.toCollection(TreeSet::new));
     }
 }
