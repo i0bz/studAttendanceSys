@@ -47,6 +47,13 @@ public class AttendanceSheet implements Serializable {
     }
 
 
+    public void markPresent(int studentUID) {
+        if (!studentRoster.studentExists(studentUID)) return;
+        Student student = studentRoster.queryStudent(studentUID);
+        if (!attendanceRoster.contains(student)) attendanceRoster.add(student);
+    }
+
+
     //Attendance Checkers
     /**
      * Check if student is present.

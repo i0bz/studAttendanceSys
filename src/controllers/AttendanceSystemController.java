@@ -72,7 +72,7 @@ public class AttendanceSystemController {
         attendanceService.deleteAttendance(ParseUtility.parseDate(date));
     }
     /**
-     * Toggle attendance of a entity.Student.
+     * Toggle attendance of Student.
      *
      * @param uid  the School ID of a student
      * @param date the date of the attendance in yyyy-MM-dd format
