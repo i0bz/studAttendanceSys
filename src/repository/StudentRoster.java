@@ -13,7 +13,6 @@ public class StudentRoster implements Serializable {
         studentRoster = new HashMap<>();
     }
 
-
     //Student Roster Management
     public void addStudentToRoster(Student student) {
         studentRoster.putIfAbsent(student.uid(), student);

@@ -121,7 +121,7 @@ public class AttendanceSystemController {
         AttendanceSheet sheet = attendanceService.queryAttendance(parsedDate);
         return sheet.attendanceStudentsSet()
                 .stream()
-                .map(student -> ParseUtility.unparseUID(student.uid()))
+                .map(ParseUtility::unparseUID)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
     public Map<String, String> attendanceRoster(String date) {

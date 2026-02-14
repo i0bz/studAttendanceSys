@@ -1,8 +1,5 @@
 package entity;
 
-import repository.AttendanceRegistry;
-import repository.StudentRoster;
-
 import java.io.Serializable;
 import java.time.*;
 import java.util.*;
@@ -62,8 +59,6 @@ public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet>
 
 
     public void markPresent(int studentUID) {
-//        if (!studentRoster.studentExists(studentUID)) return;
-//        Student student = studentRoster.queryStudent(studentUID);
         attendanceRoster.add(studentUID);
     }
 
