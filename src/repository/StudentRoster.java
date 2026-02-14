@@ -3,10 +3,7 @@ package repository;
 import entity.Student;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StudentRoster implements Serializable {
@@ -35,6 +32,6 @@ public class StudentRoster implements Serializable {
         return studentRoster.containsKey(uid);
     }
     public Map<Integer, Student> queryAllStudent() {
-        return studentRoster;
+        return new HashMap<>(studentRoster);
     }
 }

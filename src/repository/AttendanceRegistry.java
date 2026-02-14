@@ -19,9 +19,6 @@ public class AttendanceRegistry implements Serializable {
 
     public void setRoster(StudentRoster roster) {
         this.roster = roster;
-        for (Map.Entry<LocalDate, AttendanceSheet> entry : registry.entrySet()) {
-            entry.getValue().setRoster(roster);
-        }
     }
 
     //Attendance Management
@@ -31,7 +28,7 @@ public class AttendanceRegistry implements Serializable {
      * @param date the date
      */
     public void addAttendance(LocalDate date) {
-        registry.putIfAbsent(date, new AttendanceSheet(date, roster));
+        registry.putIfAbsent(date, new AttendanceSheet(date));
     }
     /**
      * Remove attendance sheet.

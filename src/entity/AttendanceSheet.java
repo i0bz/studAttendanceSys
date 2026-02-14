@@ -10,8 +10,7 @@ import java.util.*;
 
 public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet> {
     private final LocalDate date;
-    private final Set<Student> attendanceRoster;
-    private transient StudentRoster studentRoster;
+    private final Set<Integer> attendanceRoster;
 
 
     //Comparing Functions
@@ -38,19 +37,14 @@ public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet>
      * Instantiates a new Attendance sheet.
      *
      * @param date          the date
-     * @param studentRoster the student roster
      */
-    public AttendanceSheet(LocalDate date, StudentRoster studentRoster) {
+    public AttendanceSheet(LocalDate date) {
         this.date = date;
         this.attendanceRoster = new HashSet<>();
-        this.studentRoster = studentRoster;
     }
 
 
 
-    public void setRoster(StudentRoster studentRoster) {
-        this.studentRoster = studentRoster;
-    }
 
 
     //Attendance Manipulation
@@ -62,17 +56,15 @@ public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet>
      * @throws NoSuchElementException If the student uid given does not exist in the roster.
      */
     public void toggleAttendance(int studentUID) {
-        if (!studentRoster.studentExists(studentUID)) throw new NoSuchElementException("Student does not exist in the roster.");
-        Student student = studentRoster.queryStudent(studentUID);
-        if (!attendanceRoster.contains(student)) attendanceRoster.add(student);
-        else attendanceRoster.remove(student);
+        if (!attendanceRoster.contains(studentUID)) attendanceRoster.add(studentUID);
+        else attendanceRoster.remove(studentUID);
     }
 
 
     public void markPresent(int studentUID) {
-        if (!studentRoster.studentExists(studentUID)) return;
-        Student student = studentRoster.queryStudent(studentUID);
-        attendanceRoster.add(student);
+//        if (!studentRoster.studentExists(studentUID)) return;
+//        Student student = studentRoster.queryStudent(studentUID);
+        attendanceRoster.add(studentUID);
     }
 
 
@@ -84,7 +76,7 @@ public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet>
      * @return the boolean
      */
     public boolean isPresent(int studentUID) {
-        return attendanceRoster.contains(studentRoster.queryStudent(studentUID));
+        return attendanceRoster.contains(studentUID);
     }
 
 
@@ -94,7 +86,7 @@ public class AttendanceSheet implements Serializable,Comparable<AttendanceSheet>
      *
      * @return the sorted set
      */
-    public Set<Student> attendanceStudentsSet() {
+    public Set<Integer> attendanceStudentsSet() {
         return attendanceRoster;
     }
 

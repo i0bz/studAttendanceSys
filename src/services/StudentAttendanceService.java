@@ -3,6 +3,7 @@ package services;
 import entity.AttendanceSheet;
 import entity.Student;
 import repository.AttendanceRegistry;
+import repository.StudentRoster;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -11,9 +12,11 @@ import java.util.stream.Collectors;
 public class StudentAttendanceService {
 
     private final AttendanceRegistry registry;
+    private final StudentRoster roster;
 
-    public StudentAttendanceService(AttendanceRegistry registry) {
+    public StudentAttendanceService(AttendanceRegistry registry, StudentRoster roster) {
         this.registry = registry;
+        this.roster = roster;
     }
 
 
@@ -29,7 +32,8 @@ public class StudentAttendanceService {
     //Attendance Manipulation
     public void toggleAttendance(LocalDate date, int uid) {
         AttendanceSheet attendances =  registry.queryAttendance(date);
-        if (attendances == null) throw new RuntimeException("Date given has no attendance");
+        if (attendances == null) throw new NoSuchElementException("Date given has no attendance");
+        if (!roster.studentExists(uid)) throw new NoSuchElementException("Student does not exist in the roster.");
         attendances.toggleAttendance(uid);
     }
 
@@ -43,19 +47,26 @@ public class StudentAttendanceService {
     }
     public List<String> queryAttendanceNames(LocalDate date) {
         AttendanceSheet sheet = queryAttendance(date);
-        Set<Student> studentSet = sheet.attendanceStudentsSet();
-        return new ArrayList<>(studentSet.stream().map(Student::name).sorted().toList());
+        return roster.queryAllStudent()
+                .entrySet()
+                .stream()
+                .filter(entry -> sheet.isPresent(entry.getKey()))
+                .map(entry -> entry.getValue().name())
+                .sorted()
+                .collect(Collectors.toList());
     }
     public SortedSet<Integer> queryAttendanceIDs(LocalDate date) {
         AttendanceSheet sheet = queryAttendance(date);
-        return sheet.attendanceStudentsSet().stream().map(Student::uid).collect(Collectors.toCollection(TreeSet::new));
+        return new TreeSet<>(sheet.attendanceStudentsSet());
     }
-    public Set<Map.Entry<Integer, String>> queryAttendanceStudents(LocalDate date) {
+    public Set<Student> queryAttendanceStudents(LocalDate date) {
         AttendanceSheet sheet = queryAttendance(date);
-        return sheet.attendanceStudentsSet()
+        return roster.queryAllStudent()
+                .entrySet()
                 .stream()
-                .map(student -> Map.entry(student.uid(),student.name()))
-                .collect(Collectors.toCollection(HashSet::new));
+                .filter(entry -> sheet.isPresent(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
     }
 
 }
