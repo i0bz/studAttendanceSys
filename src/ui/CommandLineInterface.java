@@ -3,10 +3,7 @@ package ui;
 import controllers.*;
 
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class CommandLineInterface {
@@ -25,6 +22,7 @@ public class CommandLineInterface {
     CLI control flows
      */
     public void managementUI() {
+        System.out.println();
         int decision;
 
         while (true) {
@@ -60,6 +58,9 @@ public class CommandLineInterface {
 
     }
     private void studentManagement() {
+        System.out.println();
+        System.out.println();
+
         int decision = 0;
 
 
@@ -94,6 +95,8 @@ public class CommandLineInterface {
 
     }
     private void attendanceManagementUI() {
+        System.out.println();
+        System.out.println();
         int decision = 0;
 
 
@@ -134,6 +137,7 @@ public class CommandLineInterface {
     Student Management CLI functionalities
      */
     private void addStudent() {
+        System.out.println();
 
         System.out.print("Enter name: ");
         String name = input.nextLine();
@@ -154,6 +158,7 @@ public class CommandLineInterface {
 
     }
     private void dropStudent() {
+        System.out.println();
 
         System.out.print("Enter valid uid: ");
         String uid = input.nextLine();
@@ -190,7 +195,7 @@ public class CommandLineInterface {
     Attendance Management CLI functionalities
      */
     private void createAttendance() {
-
+        System.out.println();
         System.out.print("Enter date with format yyyy-MM-dd: ");
         String date = input.nextLine();
 
@@ -208,6 +213,7 @@ public class CommandLineInterface {
 
     }
     private void deleteAttendance() {
+        System.out.println();
 
         System.out.print("Enter date with format yyyy-MM-dd: ");
         String date = input.nextLine();
@@ -226,10 +232,10 @@ public class CommandLineInterface {
 
     }
     private void listAttendances() {
+        System.out.println();
+        System.out.println();
         List<String> attendances = attendanceSystem.attendanceDateLists();
         int i = 0;
-        System.out.println();
-        System.out.println();
 
         for (String attendance : attendances) {
             System.out.println(++i + ". " + attendance);
@@ -241,6 +247,8 @@ public class CommandLineInterface {
 
 
     private void attendanceSystemUI() {
+        System.out.println();
+
         List<String> attendanceLists = attendanceSystem.attendanceDateLists();
         int i = 0, decision;
 
@@ -274,14 +282,16 @@ public class CommandLineInterface {
             }
         }
 
-        List<String> studentUIDs =
+
         Map<String, String> rosterList = attendanceSystem.rosterLists();
+        List<String> rosterUIDList = new ArrayList<>(attendanceSystem.rosterLists().keySet());
         System.out.println();
         System.out.println();
 
         i = 0;
-        for (String studentID : studentUIDs) {
-            System.out.println(++i + ". " + rosterList.get(studentID) + "\t " + studentID + " " + attendanceSystem.isPresent(studentID, date) );
+
+        for (Map.Entry<String, String> student : rosterList.entrySet()) {
+            System.out.println(++i + ". " + student.getValue() + "\t " + student.getKey() + " " + attendanceSystem.isPresent(student.getKey(), date) );
         }
 
 
@@ -295,8 +305,8 @@ public class CommandLineInterface {
 
         while (true) {
             try {
-                if (studentUIDs.size() < decision) return;
-                studentChosen = studentUIDs.get(decision - 1);
+                if (rosterUIDList.size() < decision) return;
+                studentChosen = rosterUIDList.get(decision - 1);
                 break;
             } catch (IndexOutOfBoundsException e) {
                 System.out.print("Select valid number: ");
