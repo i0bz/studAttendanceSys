@@ -132,4 +132,7 @@ public class AttendanceSystemController {
                         entry -> entry.getValue().name()));
     }
 
+    public AttendanceSheet queryAttendance(String date) {
+        return attendanceService.queryAttendance(ParseUtility.parseDate(date));
+    }
 }

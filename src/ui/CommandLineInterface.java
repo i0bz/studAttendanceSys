@@ -1,6 +1,8 @@
 package ui;
 
 import controllers.*;
+import entity.AttendanceSheet;
+import utility.ParseUtility;
 
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -30,13 +32,14 @@ public class CommandLineInterface {
             System.out.println("1. Student Management");
             System.out.println("2. Attendance Management");
             System.out.println("3. Attendance System");
-            System.out.println("4. Exit");
+            System.out.println("4. Attendance Mode");
+            System.out.println("5. Exit");
             System.out.print("Enter choice: ");
 
             decision = safeIntInput();
 
-            while (decision <= 0 || decision >= 5) {
-                System.out.print("Enter 1, 2, 3, and 4 only: ");
+            while (decision <= 0 || decision >= 6) {
+                System.out.print("Enter 1, 2, 3, 4, and 5 only: ");
                 decision = safeIntInput();
             }
 
@@ -52,6 +55,9 @@ public class CommandLineInterface {
                     attendanceSystemUI();
                     break;
                 case 4:
+                    attendanceModeUI();
+                    break;
+                case 5:
                     return;
             }
         }
@@ -314,6 +320,67 @@ public class CommandLineInterface {
             }
         }
         attendanceSystem.toggleAttendance(studentChosen, date);
+
+    }
+
+
+
+    public void attendanceModeUI() {
+        System.out.println();
+
+        List<String> attendanceLists = attendanceSystem.attendanceDateLists();
+        int i = 0, decision;
+
+
+        System.out.println();
+        System.out.println();
+        if (attendanceLists.isEmpty()) {
+            System.out.println("There are no registered attendances.");
+            return;
+        }
+
+
+
+        for (String attendanceDate : attendanceLists) {
+            System.out.println(++i + ". " + attendanceDate);
+        }
+
+        System.out.println();
+        System.out.print("Select Attendance: ");
+        decision = safeIntInput();
+
+        String date;
+
+        while (true) {
+            try {
+                date = attendanceLists.get(decision - 1);
+                break;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.print("Select valid number: ");
+                decision = safeIntInput();
+            }
+        }
+
+        AttendanceSheet sheet = attendanceSystem.queryAttendance(date);
+        System.out.println();
+        System.out.println("Attendance Mode : " + date);
+
+
+        int parsedUid;
+        String line = "";
+        while (true) {
+            try {
+                System.out.println("Enter UID (or q to exit):");
+                line = input.nextLine();
+                parsedUid = ParseUtility.parseUID(line);
+                sheet.markPresent(parsedUid);
+            } catch (RuntimeException e) {
+                if (line.equals("q")) return;
+
+                System.out.print("Enter valid uid: ");
+                line = input.nextLine();
+            }
+        }
 
     }
 
