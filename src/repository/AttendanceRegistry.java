@@ -7,17 +7,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AttendanceRegistry implements Serializable {
 
     private final HashMap<LocalDate, AttendanceSheet> registry;
-    private final StudentRoster roster;
+    private transient StudentRoster roster;
 
     public AttendanceRegistry(StudentRoster roster) {
         this.registry = new HashMap<>();
         this.roster = roster;
     }
 
+    public void setRoster(StudentRoster roster) {
+        this.roster = roster;
+        for (Map.Entry<LocalDate, AttendanceSheet> entry : registry.entrySet()) {
+            entry.getValue().setRoster(roster);
+        }
+    }
 
     //Attendance Management
     /**

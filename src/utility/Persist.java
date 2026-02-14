@@ -41,6 +41,7 @@ public class Persist {
         try (FileInputStream ifs = new FileInputStream(attendanceFile);
              ObjectInputStream objectStream = new ObjectInputStream(ifs)) {
             reg = (AttendanceRegistry) objectStream.readObject();
+            reg.setRoster(roster);
         }   catch (IOException e) {
             reg = new AttendanceRegistry(roster);
         } catch (ClassNotFoundException e2) {

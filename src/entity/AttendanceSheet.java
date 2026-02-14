@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class AttendanceSheet implements Serializable {
     private final LocalDate date;
     private final ArrayList<Student> attendanceRoster;
-    private final StudentRoster studentRoster;
+    private transient StudentRoster studentRoster;
 
 
     /**
@@ -23,6 +23,10 @@ public class AttendanceSheet implements Serializable {
     public AttendanceSheet(LocalDate date, StudentRoster studentRoster) {
         this.date = date;
         this.attendanceRoster = new ArrayList<>();
+        this.studentRoster = studentRoster;
+    }
+
+    public void setRoster(StudentRoster studentRoster) {
         this.studentRoster = studentRoster;
     }
 
