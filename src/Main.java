@@ -11,7 +11,7 @@ public class Main {
 
         StudentRoster roster = Persist.loadRoster();
         AttendanceRegistry registry = Persist.loadRegistry(roster);
-        StudentAttendanceService attendanceService = new StudentAttendanceService(registry);
+        StudentAttendanceService attendanceService = new StudentAttendanceService(registry, roster);
         StudentManagementService managementService = new StudentManagementService(roster);
         AttendanceSystemController controller = new AttendanceSystemController(managementService, attendanceService);
 
