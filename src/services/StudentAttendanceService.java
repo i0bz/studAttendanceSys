@@ -46,13 +46,16 @@ public class StudentAttendanceService {
         Set<Student> studentSet = sheet.attendanceStudentsSet();
         return new ArrayList<>(studentSet.stream().map(Student::name).sorted().toList());
     }
-    public SortedSet<Integer> queryAttendanceID(LocalDate date) {
+    public SortedSet<Integer> queryAttendanceIDs(LocalDate date) {
         AttendanceSheet sheet = queryAttendance(date);
         return sheet.attendanceStudentsSet().stream().map(Student::uid).collect(Collectors.toCollection(TreeSet::new));
     }
     public Set<Map.Entry<Integer, String>> queryAttendanceStudents(LocalDate date) {
         AttendanceSheet sheet = queryAttendance(date);
-        return sheet.attendanceStudentsSet().stream().map(student -> Map.entry(student.uid(),student.name())).collect(Collectors.toSet());
+        return sheet.attendanceStudentsSet()
+                .stream()
+                .map(student -> Map.entry(student.uid(),student.name()))
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
 }
