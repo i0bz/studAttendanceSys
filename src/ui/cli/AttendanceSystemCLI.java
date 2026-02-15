@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class AttendanceSystemCLI {
-    private final AttendanceSystemController attendanceSystem;
+    private final AttendanceSystemController systemController;
     private final InputValidator validator;
-    private final Scanner input;
+    private final Scanner stdin;
 
 
-    AttendanceSystemCLI(Scanner input, AttendanceSystemController attendanceSystem, InputValidator validator) {
-        this.input = input;
-        this.attendanceSystem = attendanceSystem;
+    AttendanceSystemCLI(Scanner stdin, InputValidator validator, AttendanceSystemController systemController) {
+        this.stdin = stdin;
+        this.systemController = systemController;
         this.validator = validator;
     }
 
@@ -29,7 +29,7 @@ public class AttendanceSystemCLI {
     void initCLI() {
         System.out.println();
 
-        List<String> attendanceLists = attendanceSystem.attendanceDateLists();
+        List<String> attendanceLists = systemController.attendanceDateLists();
         int i = 0, decision;
 
 
@@ -63,15 +63,15 @@ public class AttendanceSystemCLI {
         }
 
 
-        Map<String, String> rosterList = attendanceSystem.rosterLists();
-        List<String> rosterUIDList = new ArrayList<>(attendanceSystem.rosterLists().keySet());
+        Map<String, String> rosterList = systemController.rosterLists();
+        List<String> rosterUIDList = new ArrayList<>(systemController.rosterLists().keySet());
         System.out.println();
         System.out.println();
 
         i = 0;
 
         for (Map.Entry<String, String> student : rosterList.entrySet()) {
-            System.out.println(++i + ". " + student.getValue() + "\t " + student.getKey() + " " + attendanceSystem.isPresent(student.getKey(), date) );
+            System.out.println(++i + ". " + student.getValue() + "\t " + student.getKey() + " " + systemController.isPresent(student.getKey(), date) );
         }
 
 
@@ -93,7 +93,7 @@ public class AttendanceSystemCLI {
                 decision = validator.safeIntInput();
             }
         }
-        attendanceSystem.toggleAttendance(studentChosen, date);
+        systemController.toggleAttendance(studentChosen, date);
 
     }
 
@@ -102,7 +102,7 @@ public class AttendanceSystemCLI {
     public void attendanceMode() {
         System.out.println();
 
-        List<String> attendanceLists = attendanceSystem.attendanceDateLists();
+        List<String> attendanceLists = systemController.attendanceDateLists();
         int i = 0, decision;
 
 
@@ -135,7 +135,7 @@ public class AttendanceSystemCLI {
             }
         }
 
-        AttendanceSheet sheet = attendanceSystem.queryAttendance(date);
+        AttendanceSheet sheet = systemController.queryAttendance(date);
         System.out.println();
         System.out.println("Attendance Mode : " + date);
 
@@ -145,14 +145,14 @@ public class AttendanceSystemCLI {
         while (true) {
             try {
                 System.out.println("Enter UID (or q to exit):");
-                line = input.nextLine();
+                line = stdin.nextLine();
                 parsedUid = ParseUtility.parseUID(line);
                 sheet.markPresent(parsedUid);
             } catch (RuntimeException e) {
                 if (line.equals("q")) return;
 
                 System.out.print("Enter valid uid: ");
-                line = input.nextLine();
+                line = stdin.nextLine();
             }
         }
 

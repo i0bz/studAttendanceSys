@@ -5,16 +5,16 @@ import controllers.AttendanceSystemController;
 import java.util.Map;
 import java.util.Scanner;
 
-public class StudentManagemenCLI {
+public class StudentManagementCLI {
 
-    private final Scanner input;
+    private final Scanner stdin;
     private final InputValidator validator;
-    private final AttendanceSystemController attendanceSystem;
+    private final AttendanceSystemController systemController;
 
-    StudentManagemenCLI(Scanner input, InputValidator validator, AttendanceSystemController attendanceSystem) {
-        this.input = input;
+    StudentManagementCLI(Scanner stdin, InputValidator validator, AttendanceSystemController systemController) {
+        this.stdin = stdin;
         this.validator = validator;
-        this.attendanceSystem = attendanceSystem;
+        this.systemController = systemController;
     }
 
     void initCLI() {
@@ -58,43 +58,41 @@ public class StudentManagemenCLI {
         System.out.println();
 
         System.out.print("Enter name: ");
-        String name = input.nextLine();
+        String name = stdin.nextLine();
         if (name.equals("q")) return;
         System.out.print("Enter valid uid: ");
-        String uid = input.nextLine();
+        String uid = stdin.nextLine();
 
         while (true) {
             try {
                 if (uid.equals("q")) return;
-                attendanceSystem.enrollStudent(name, uid);
+                systemController.enrollStudent(name, uid);
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Invalid UID!!!");
                 System.out.print("Reenter: ");
-                uid = input.nextLine();
+                uid = stdin.nextLine();
             }
         }
 
 
     }
 
-
-
     private void dropStudent() {
         System.out.println();
 
         System.out.print("Enter valid uid: ");
-        String uid = input.nextLine();
+        String uid = stdin.nextLine();
 
         while (true) {
             try {
                 if (uid.equals("q")) return;
-                attendanceSystem.dropStudent(uid);
+                systemController.dropStudent(uid);
                 break;
             } catch (RuntimeException e) {
                 System.out.println("Invalid UID!!!");
                 System.out.print("Reenter: ");
-                uid = input.nextLine();
+                uid = stdin.nextLine();
             }
         }
 
@@ -105,7 +103,7 @@ public class StudentManagemenCLI {
 
         System.out.println();
         System.out.println();
-        Map<String, String> roster = attendanceSystem.rosterLists();
+        Map<String, String> roster = systemController.rosterLists();
         int i = 0;
         for (Map.Entry<String, String> student : roster.entrySet()) {
             System.out.printf("%d. %s\t%s\n", ++i, student.getValue(), student.getKey());

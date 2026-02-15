@@ -4,24 +4,22 @@ import controllers.AttendanceSystemController;
 
 import java.util.Scanner;
 
-public class MenuHandler {
+public class CLIHandler {
     private final InputValidator validator;
-    private final StudentManagemenCLI studentManagement;
+    private final StudentManagementCLI studentManagement;
     private final AttendanceManagementCLI attendanceManagement;
     private final AttendanceSystemCLI attendanceSystem;
 
 
-    public MenuHandler(InputValidator validator,
-                       StudentManagemenCLI studentManagement,
-                       AttendanceManagementCLI attendanceManagement,
-                       AttendanceSystemCLI attendanceSystem) {
-        this.validator = validator;
-        this.studentManagement = studentManagement;
-        this.attendanceManagement = attendanceManagement;
-        this.attendanceSystem = attendanceSystem;
+    public CLIHandler(AttendanceSystemController systemController) {
+        Scanner stdin = new Scanner(System.in);
+        this.validator = new InputValidator(stdin);
+        this.studentManagement = new StudentManagementCLI(stdin, validator, systemController);
+        this.attendanceManagement = new AttendanceManagementCLI(stdin, validator, systemController);
+        this.attendanceSystem = new AttendanceSystemCLI(stdin, validator, systemController);
     }
 
-    public void managementUI() {
+    public void init() {
         int decision;
 
         while (true) {

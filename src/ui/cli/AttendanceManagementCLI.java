@@ -8,13 +8,13 @@ import java.util.Scanner;
 
 public class AttendanceManagementCLI {
     private final InputValidator validator;
-    private final Scanner input;
-    private final AttendanceSystemController attendanceSystem;
+    private final Scanner stdin;
+    private final AttendanceSystemController systemController;
 
-    AttendanceManagementCLI(InputValidator validator, Scanner input, AttendanceSystemController attendanceSystem) {
+    AttendanceManagementCLI( Scanner stdin, InputValidator validator, AttendanceSystemController systemController) {
         this.validator = validator;
-        this.input = input;
-        this.attendanceSystem = attendanceSystem;
+        this.stdin = stdin;
+        this.systemController = systemController;
     }
 
 
@@ -60,17 +60,17 @@ public class AttendanceManagementCLI {
     private void createAttendance() {
         System.out.println();
         System.out.print("Enter date with format yyyy-MM-dd: ");
-        String date = input.nextLine();
+        String date = stdin.nextLine();
 
         while (true) {
             try {
                 if (date.equals("q")) return;
-                attendanceSystem.addAttendance(date);
+                systemController.addAttendance(date);
                 break;
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid Date!!!");
                 System.out.print("Reenter: ");
-                date = input.nextLine();
+                date = stdin.nextLine();
             }
         }
 
@@ -82,17 +82,17 @@ public class AttendanceManagementCLI {
         System.out.println();
 
         System.out.print("Enter date with format yyyy-MM-dd: ");
-        String date = input.nextLine();
+        String date = stdin.nextLine();
 
         while (true) {
             try {
                 if (date.equals("q")) return;
-                attendanceSystem.removeAttendance(date);
+                systemController.removeAttendance(date);
                 break;
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid Date!!!");
                 System.out.print("Reenter: ");
-                date = input.nextLine();
+                date = stdin.nextLine();
             }
         }
 
@@ -103,7 +103,7 @@ public class AttendanceManagementCLI {
     private void listAttendances() {
         System.out.println();
         System.out.println();
-        List<String> attendances = attendanceSystem.attendanceDateLists();
+        List<String> attendances = systemController.attendanceDateLists();
         int i = 0;
 
         for (String attendance : attendances) {

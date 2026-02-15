@@ -4,19 +4,19 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputValidator {
-    private final Scanner input;
+    private final Scanner stdin;
 
-    InputValidator(Scanner input) {
-        this.input = input;
+    InputValidator(Scanner stdin) {
+        this.stdin = stdin;
     }
 
     int safeIntInput() {
         int tmp;
         try {
-            tmp = input.nextInt();
-            input.nextLine();
+            tmp = stdin.nextInt();
+            stdin.nextLine();
         } catch (InputMismatchException e) {
-            input.nextLine();
+            stdin.nextLine();
             return -1;
         }
         return tmp;
@@ -25,10 +25,10 @@ public class InputValidator {
     double safeDoubleInput() {
         int tmp;
         try {
-            tmp = input.nextInt();
-            input.nextLine();
+            tmp = stdin.nextInt();
+            stdin.nextLine();
         } catch (InputMismatchException e) {
-            input.nextLine();
+            stdin.nextLine();
             return -1;
         }
         return tmp;

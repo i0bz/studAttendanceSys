@@ -1,10 +1,6 @@
 import controllers.AttendanceControllerFactory;
 import controllers.AttendanceSystemController;
-import repository.AttendanceRegistry;
-import repository.StudentRoster;
-import services.StudentAttendanceService;
-import services.StudentManagementService;
-import ui.cli.CommandLineInterface;
+import ui.cli.CLIHandler;
 import utility.Persist;
 
 public class Main {
@@ -18,8 +14,8 @@ public class Main {
 
         for (String arg : args) {
             if (arg.equals("--cli")) {
-                CommandLineInterface cli = new CommandLineInterface(controller);
-                cli.managementUI();
+                CLIHandler cli = new CLIHandler(controller);
+                cli.init();
             }
         }
 
