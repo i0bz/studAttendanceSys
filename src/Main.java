@@ -1,19 +1,19 @@
+import controllers.AttendanceControllerFactory;
 import controllers.AttendanceSystemController;
 import repository.AttendanceRegistry;
 import repository.StudentRoster;
 import services.StudentAttendanceService;
 import services.StudentManagementService;
-import ui.CommandLineInterface;
+import ui.cli.CommandLineInterface;
 import utility.Persist;
 
 public class Main {
     static void main(String[] args) {
 
-        StudentRoster roster = Persist.loadRoster();
-        AttendanceRegistry registry = Persist.loadRegistry(roster);
-        StudentAttendanceService attendanceService = new StudentAttendanceService(registry, roster);
-        StudentManagementService managementService = new StudentManagementService(roster);
-        AttendanceSystemController controller = new AttendanceSystemController(managementService, attendanceService);
+        AttendanceControllerFactory attendanceFactory = new AttendanceControllerFactory();
+        AttendanceSystemController controller = attendanceFactory.createController();
+
+
 
 
         for (String arg : args) {
@@ -23,7 +23,7 @@ public class Main {
             }
         }
 
-        Persist.saveRosterFile(roster);
-        Persist.saveRegistry(registry);
+        Persist.saveRosterFile(attendanceFactory.roster());
+        Persist.saveRegistry(attendanceFactory.registry());
     }
 }

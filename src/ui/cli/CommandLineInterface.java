@@ -1,4 +1,4 @@
-package ui;
+package ui.cli;
 
 import controllers.*;
 import entity.AttendanceSheet;

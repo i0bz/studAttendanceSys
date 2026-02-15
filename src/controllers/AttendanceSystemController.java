@@ -27,10 +27,13 @@ public class AttendanceSystemController {
      * @param managementService the student management service
      * @param attendanceService the attendance service
      */
-    public AttendanceSystemController(StudentManagementService managementService, StudentAttendanceService attendanceService) {
+    AttendanceSystemController(StudentManagementService managementService, StudentAttendanceService attendanceService) {
         this.studentManagement = managementService;
         this.attendanceService = attendanceService;
     }
+
+
+
 
     //Student Management
     /**
@@ -71,15 +74,17 @@ public class AttendanceSystemController {
     public void removeAttendance(String date) {
         attendanceService.deleteAttendance(ParseUtility.parseDate(date));
     }
+
+
+
+
+    //Attendance System
     /**
      * Toggle attendance of Student.
      *
      * @param uid  the School ID of a student
      * @param date the date of the attendance in yyyy-MM-dd format
      */
-
-
-    //Attendance System
     public void toggleAttendance(String uid, String date) {
         attendanceService.toggleAttendance(ParseUtility.parseDate(date), ParseUtility.parseUID(uid));
     }
@@ -93,12 +98,6 @@ public class AttendanceSystemController {
     }
 
 
-    public List<String> attendanceDateLists() {
-        return attendanceService.queryAttendanceDateList()
-                .stream()
-                .map(LocalDate::toString)
-                .toList();
-    }
 
 
     //Querying (Student Management specific)
@@ -135,7 +134,15 @@ public class AttendanceSystemController {
                         entry -> entry.getValue().name()));
     }
 
+    //Querying (Registry)
     public AttendanceSheet queryAttendance(String date) {
         return attendanceService.queryAttendance(ParseUtility.parseDate(date));
     }
+    public List<String> attendanceDateLists() {
+        return attendanceService.queryAttendanceDateList()
+                .stream()
+                .map(LocalDate::toString)
+                .toList();
+    }
+
 }
